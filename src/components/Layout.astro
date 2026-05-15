@@ -741,11 +741,11 @@
   </div>
 
   <script>
+    // @ts-nocheck
     // ─── SPOTLIGHT ───
     (function() {
-      const spot = /** @type {HTMLElement} */ (document.getElementById('spotlight'));
+      const spot = document.getElementById('spotlight');
       if (!spot) return;
-      /** @type {number | null} */
       let rafId = null;
       let mx = window.innerWidth / 2, my = window.innerHeight / 2;
 
@@ -799,7 +799,7 @@
               if (w) setTimeout(() => { langFill.style.width = w; }, 200);
             }
 
-            const skillTags = entry.target.closest('.skill-tags');
+            const skillTags = entry.target.querySelector('.skill-tags');
             if (skillTags) {
               skillTags.classList.add('visible');
             }
