@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alexander Pardo — Desarrollador de Software</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #0a0e0f;
+      --surface:  #111618;
+      --border:   #1e2a2e;
+      --accent:   #00e5a0;
+      --accent2:  #0099ff;
+      --muted:    #4a6270;
+      --text:     #c8d8de;
+      --bright:   #eaf4f8;
+      --mono:     'JetBrains Mono', monospace;
+      --sans:     'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ─── GRID LINES ─── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    /* ─── LAYOUT ─── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 32px 100px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 48px 48px 40px;
+      margin-bottom: 4px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 4px;
+      border: 2px solid var(--accent);
+      background: var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: var(--accent);
+      font-family: var(--sans);
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+
+    .hero-info { flex: 1; min-width: 240px; }
+
+    .prompt {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 6px;
+      letter-spacing: 0.08em;
+    }
+
+    .prompt span { color: var(--accent); }
+
+    .name {
+      font-family: var(--sans);
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 800;
+      color: var(--bright);
+      line-height: 1;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+
+    .title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.25);
+      color: var(--accent);
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 1.2s infinite; }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 12px;
+      transition: color 0.2s;
+    }
+    .contact-item:hover { color: var(--accent); }
+    .contact-item svg { opacity: 0.5; flex-shrink: 0; }
+    .contact-item:hover svg { opacity: 1; }
+
+    /* ─── PROFILE ─── */
+    .profile-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 28px 48px;
+      margin-bottom: 4px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .profile-block p {
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .profile-block p strong { color: var(--accent); font-weight: 500; }
+
+    /* ─── GRID SECTIONS ─── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ─── SECTION ─── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .exp-list { display: flex; flex-direction: column; gap: 28px; }
+
+    .exp-item { position: relative; padding-left: 20px; }
+
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 7px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .exp-item::after {
+      content: '';
+      position: absolute;
+      left: 2px; top: 16px;
+      width: 1px;
+      bottom: -28px;
+      background: linear-gradient(var(--border), transparent);
+    }
+
+    .exp-item:last-child::after { display: none; }
+
+    .exp-header { margin-bottom: 4px; }
+
+    .exp-role {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--bright);
+    }
+
+    .exp-company {
+      font-size: 11px;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .exp-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+
+    .exp-bullets li {
+      font-size: 12px;
+      color: var(--text);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .exp-bullets li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* ─── SKILLS ─── */
+    .skill-group { margin-bottom: 18px; }
+    .skill-group:last-child { margin-bottom: 0; }
+
+    .skill-cat {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: rgba(255,255,255,0.02);
+      transition: all 0.2s;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,160,0.05);
+    }
+
+    .tag.accent { border-color: rgba(0,229,160,0.35); color: var(--accent); background: rgba(0,229,160,0.07); }
+    .tag.blue   { border-color: rgba(0,153,255,0.35); color: var(--accent2); background: rgba(0,153,255,0.07); }
+
+    /* ─── EDU ─── */
+    .edu-item { padding-left: 20px; position: relative; }
+    .edu-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 7px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 8px var(--accent2);
+    }
+
+    .edu-degree { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--bright); }
+    .edu-school { font-size: 11px; color: var(--accent2); letter-spacing: 0.05em; text-transform: uppercase; }
+    .edu-date   { font-size: 11px; color: var(--muted); }
+
+    /* ─── LANGUAGES ─── */
+    .lang-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .lang-item {}
+    .lang-name { font-size: 13px; color: var(--bright); margin-bottom: 4px; }
+    .lang-level { font-size: 11px; color: var(--muted); }
+
+    .lang-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+    .lang-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 1s ease;
+    }
+
+    /* ─── SOFT SKILLS ─── */
+    .soft-grid { display: flex; flex-direction: column; gap: 8px; }
+
+    .soft-item {
+      font-size: 12px;
+      color: var(--text);
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      background: rgba(0,229,160,0.02);
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 11px;
+      color: var(--muted);
+      animation: fadeUp 0.7s 0.5s ease both;
+    }
+
+    .footer span { color: var(--accent); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section:nth-child(1) { animation-delay: 0.15s; }
+    .section:nth-child(2) { animation-delay: 0.20s; }
+    .section:nth-child(3) { animation-delay: 0.25s; }
+    .section:nth-child(4) { animation-delay: 0.30s; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="avatar">AP</div>
+      <div class="hero-info">
+        <div class="prompt"><span>~/portfolio</span> $ whoami</div>
+        <h1 class="name">Alexander<br>Pardo</h1>
+        <div class="title-badge">
+          <span class="dot"></span>
+          Full Stack Developer
+        </div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <a class="contact-item" href="mailto:jhonalexander2016@gmail.com">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        jhonalexander2016@gmail.com
+      </a>
+      <a class="contact-item" href="tel:+573126448441">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.8 19.8 0 0 1 1.61 3.38 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +57 312 644 8441
+      </a>
+      <a class="contact-item" href="https://github.com/TU_USUARIO" target="_blank">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        github.com/TU_USUARIO
+      </a>
+      <span class="contact-item">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Popayán, Cauca — Colombia
+      </span>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="profile-block">
+    <p>Desarrollador de software <strong>Full Stack</strong> con más de 1 año de experiencia en proyectos empresariales y arquitectura cloud (<strong>AWS</strong>). Especializado en <strong>NestJS, React y PHP</strong>, con participación directa en el diseño, escalamiento y despliegue de sistemas de alta complejidad. Orientado a soluciones escalables, código limpio y mejora continua.</p>
+  </div>
+
+  <!-- EXPERIENCE (full width) -->
+  <div class="section" style="margin-bottom:4px; animation-delay:0.2s;">
+    <div class="section-label">Experiencia profesional</div>
+    <div class="exp-list">
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Auxiliar de Sistemas — Full Stack Developer</div>
+          <div class="exp-company">Electrocreditos del Cauca</div>
+          <div class="exp-date">Diciembre 2025 – Actualidad</div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Lideré el escalamiento de una mesa de ayuda empresarial con más de 60 tablas y flujos dinámicos de alta complejidad.</li>
+          <li>Migré el backend a <strong style="color:var(--accent)">NestJS</strong> y el frontend a <strong style="color:var(--accent)">React + Vite</strong>, modernizando toda la arquitectura del sistema.</li>
+          <li>Implementé infraestructura en <strong style="color:var(--accent2)">AWS</strong> usando App Runner, ECS/Fargate, S3, Load Balancer y RDS.</li>
+          <li>Participé en la configuración y optimización del entorno cloud productivo.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Desarrollador de Software — Etapa Práctica</div>
+          <div class="exp-company">Electrocreditos del Cauca</div>
+          <div class="exp-date">Mayo 2025 – Diciembre 2025</div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Desarrollé automatizaciones en <strong style="color:var(--accent)">Python + Pandas</strong> que optimizaron procesos internos de la empresa.</li>
+          <li>Construí y mantuve un sistema empresarial en <strong style="color:var(--accent)">PHP, jQuery, JavaScript, HTML y CSS</strong>.</li>
+          <li>Configuré y desplegué el proyecto en servidor VPS mediante cPanel, gestionando base de datos y entorno productivo.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Desarrollador de Software</div>
+          <div class="exp-company">SENA Regional Cauca</div>
+          <div class="exp-date">Octubre 2024 – Mayo 2025</div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Contribuí al desarrollo del sistema <strong style="color:var(--accent)">LISA</strong> (List & System Attendance) para gestión de asistencia.</li>
+          <li>Implementé el frontend con <strong style="color:var(--accent)">Angular</strong> y el backend con <strong style="color:var(--accent)">Laravel</strong>, incluyendo consumo de APIs REST.</li>
+          <li>Trabajé bajo metodología de equipo cumpliendo entregables y estándares de calidad de software.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="grid-2">
+
+    <!-- SKILLS -->
+    <div class="section">
+      <div class="section-label">Stack técnico</div>
+
+      <div class="skill-group">
+        <div class="skill-cat">Frontend</div>
+        <div class="skill-tags">
+          <span class="tag accent">React</span>
+          <span class="tag accent">Angular</span>
+          <span class="tag">jQuery</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">HTML / CSS</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-cat">Backend</div>
+        <div class="skill-tags">
+          <span class="tag accent">NestJS</span>
+          <span class="tag">Laravel</span>
+          <span class="tag">PHP</span>
+          <span class="tag">Python</span>
+          <span class="tag">C#</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-cat">Cloud & DevOps</div>
+        <div class="skill-tags">
+          <span class="tag blue">AWS</span>
+          <span class="tag blue">App Runner</span>
+          <span class="tag blue">ECS / Fargate</span>
+          <span class="tag blue">S3</span>
+          <span class="tag blue">RDS</span>
+          <span class="tag">cPanel / VPS</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-cat">Bases de datos</div>
+        <div class="skill-tags">
+          <span class="tag">MySQL</span>
+          <span class="tag">SQL Relacional</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-cat">Otros</div>
+        <div class="skill-tags">
+          <span class="tag">Git</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">Excel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div style="display:flex; flex-direction:column; gap:4px;">
+
+      <!-- EDUCATION -->
+      <div class="section">
+        <div class="section-label">Educación</div>
+        <div class="edu-item">
+          <div class="edu-degree">Tecnología en Análisis y Desarrollo de Software</div>
+          <div class="edu-school">SENA — Regional Cauca</div>
+          <div class="edu-date">Junio 2023 – Diciembre 2025</div>
+        </div>
+      </div>
+
+      <!-- LANGUAGES -->
+      <div class="section">
+        <div class="section-label">Idiomas</div>
+        <div class="lang-list">
+          <div class="lang-item">
+            <div class="lang-name">Español</div>
+            <div class="lang-level">Nativo</div>
+            <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-name">Inglés</div>
+            <div class="lang-level">Básico — lectura técnica</div>
+            <div class="lang-bar"><div class="lang-fill" style="width:28%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOFT SKILLS -->
+      <div class="section">
+        <div class="section-label">Habilidades blandas</div>
+        <div class="soft-grid">
+          <div class="soft-item">Trabajo en equipo</div>
+          <div class="soft-item">Resolución de problemas</div>
+          <div class="soft-item">Aprendizaje continuo</div>
+          <div class="soft-item">Adaptabilidad</div>
+          <div class="soft-item">Orientado a resultados</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Alexander Pardo</span> · Popayán, Colombia · Disponible para reubicación y trabajo remoto
+  </div>
+
+</div>
+</body>
+</html>

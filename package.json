@@ -1,0 +1,25 @@
+{
+  "name": "cv-dev-alexander",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/4lexanderpardo09/cv-dev-alexander.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/4lexanderpardo09/cv-dev-alexander/issues"
+  },
+  "homepage": "https://github.com/4lexanderpardo09/cv-dev-alexander#readme",
+  "dependencies": {
+    "astro": "^6.0.5"
+  }
+}
