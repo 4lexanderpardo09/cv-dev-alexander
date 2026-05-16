@@ -466,12 +466,12 @@
         entries.forEach(e => {
           if (e.isIntersecting) {
             e.target.classList.add('visible');
-            const exp = e.target.closest('.exp-item');
-            if (exp) exp.classList.add('draw');
-            const lf = e.target.querySelector('.lang-fill');
-            if (lf) { const w = lf.getAttribute('data-width'); if (w) setTimeout(() => { lf.style.width = w; }, 200); }
-            const st = e.target.querySelector('.skill-tags');
-            if (st) st.classList.add('visible');
+            const exp = e.target.querySelectorAll('.exp-item');
+            exp.forEach(el => el.classList.add('draw'));
+            const lf = e.target.querySelectorAll('.lang-fill');
+            lf.forEach(el => { const w = el.getAttribute('data-width'); if (w) setTimeout(() => { el.style.width = w; }, 200); });
+            const st = e.target.querySelectorAll('.skill-tags');
+            st.forEach(t => t.classList.add('visible'));
             obs.unobserve(e.target);
           }
         });
