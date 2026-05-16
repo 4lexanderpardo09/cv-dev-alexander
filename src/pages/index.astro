@@ -15,22 +15,20 @@ import Footer from '../components/Footer.astro';
   <Profile />
   <Experience />
 
-  <div class="grid-2">
+  <!-- Bento Grid -->
+  <div class="bento bento-2">
     <Skills />
-    <div style="display:flex; flex-direction:column; gap:4px;">
-      <Education />
-      <Languages />
-      <SoftSkills />
-    </div>
-  </div>
+    <div>
+      <div class="bento bento-3" style="margin-bottom:6px;">
+        <Education />
+        <Languages />
+        <SoftSkills />
+      </div>
 
-  <div class="status-bar reveal">
-    <div class="sb-left">
-      <span><span class="sb-indicator"></span> Disponible para oportunidades</span>
-    </div>
-    <div class="sb-right">
-      <span>Ubicación: <span class="sb-key">Popayán, Colombia</span></span>
-      <span>Método: <span class="sb-key">Remoto / Presencial</span></span>
+      <div class="status-bar reveal">
+        <span><span class="sb-dot"></span> Disponible para oportunidades</span>
+        <span><span class="sb-key">Popayán, Colombia</span> · Remoto / Presencial</span>
+      </div>
     </div>
   </div>
 
